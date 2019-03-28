@@ -1,0 +1,111 @@
+{% extends "base.html" %} 
+{% load crispy_forms_tags %}
+{% load markdown_deux_tags %} {% block content %}
+<div class="col-sm-6  card  mt-5 mb-5 pt-2 pb-2 pr-2 pl-2col-sm-offset-3">
+  <div class="caption">
+    <h1>
+      {{ instance.title }}
+    </h1>
+    {% if instance.image %}
+
+    <img src="{{ instance.image.url }}" class="img-fluid" />
+    {% endif %}
+    <small class="faded">{{ instance.timestamp }} </small>
+    {% if instance.user %}
+    <p>Author : {{ instance.user }}</p>
+    {% endif %} Share on
+    <a
+      class="twitterlink"
+      href="https://twitter.com/home?status={{ object.text }}%20{{
+        request.build_absolute_uri
+      }}"
+    >
+      Twitter
+    </a>
+    <a
+      class="glink"
+      href="https://plus.google.com/share?url=http://codingforentrepreneurs.com"
+    >
+      Google+</a
+    >
+    <a
+      class="linkedinlink"
+      href="https://www.linkedin.com/shareArticle?mini=true&url={{
+        request.build_absolute_uri
+      }}&title={{ post.text }}20me!&source={{ request.build_absolute_uri }}"
+    >
+      Linkedin
+    </a>
+
+    <p id="content" class="content-markdown mt-2 mb-2 mr-2 ml-2">
+      {{ instance.content|markdown|linebreaks }}
+    </p>
+    
+    <div class="comments">
+      <p class="lead">Comments</p>
+      <form action="." method="POST">
+          {% csrf_token %}
+          {{ comment_form|crispy }}
+          <input type="submit" value="Post Comments">
+    
+        </form>
+      {% for comment in comments %}
+        <div class="container">
+            <div class="dialogbox">
+              <div class="body">
+                <span class="tip tip-up"></span>
+                  <blockquote>{{comment.comentText }}</blockquote>
+
+          <footer class="blockquote-footer">via {{ comment.user }}| {{comment.timestamp|timesince }}</cite></footer>
+                </div>
+              </div>
+            </div>
+      {% endfor %}
+      <style>
+      .tip {
+  width: 0px;
+  height: 0px;
+  position: absolute;
+  background: transparent;
+  border: 10px solid #ccc;
+}
+
+.tip-up {
+  top: -25px; /* Same as body margin top + border */
+  left: 10px;
+  border-right-color: transparent;
+  border-left-color: transparent;
+  border-top-color: transparent;
+}
+.dialogbox .body {
+  position: relative;
+  max-width: 300px;
+  height: auto;
+  margin: 20px 10px;
+  padding: 5px;
+  background-color: #DADADA;
+  border-radius: 3px;
+  border: 5px solid #ccc;
+}
+
+.body .message {
+  min-height: 30px;
+  border-radius: 3px;
+  font-family: Arial;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #797979;
+}
+      </style>
+    </div>
+    <script
+      src="http://code.jquery.com/jquery-3.3.1.min.js"
+      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous"
+    ></script>
+    <script type="text/javascript">
+      $("img").addClass("img-fluid");
+    </script>
+  </div>
+</div>
+{% endblock content %}
