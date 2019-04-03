@@ -1,17 +1,21 @@
 from django.shortcuts import render
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404,redirect
 from .models import Comment
 from django.contrib.contenttypes.models import ContentType
 from django.http import HttpResponseRedirect
 from .forms import CommentForm
+from posts.models import Post
 # Create your views here.
-def comment_thread(request,abc):
-    obj = get_object_or_404(Comment, id = abc)
+def comment_thread(request,id):
+    obj = get_object_or_404(Comment, id = id)
+    content_object = obj.content_object
+    content_id = obj.content_object.id
     initial_data = {
-        'content_type':
-        ''
+        'content_type':obj.content_type,
+        'object_id':content_id
     }
-    comment_form = CommentForm(request.POST or None)
+    comment_form = CommentForm(request.POST or None, initial =initial_data)
+    print(comment_form.errors)
     if comment_form.is_valid():
         # if the form is valid the getting the content_type from the comment_form
         # getting the object id from the comment_form
@@ -38,6 +42,7 @@ def comment_thread(request,abc):
             comentText=content_data,
             parent = parent_obj
             )
+        return redirect('thread')
     context = {
         'comment':obj,
         'comment_form':comment_form,

@@ -19,8 +19,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('posts/', include('posts.urls')),
-    path('comments/', include('comments.urls')),
+    path('posts/', include('posts.urls',namespace = 'posts')),
+    path('comments/', include('comments.urls',namespace = 'comments')),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -2,7 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
-
+from django.urls import reverse
 class CommentManager(models.Manager):
     def all(self):
         qs = super(CommentManager,self).filter(parent = None)
@@ -27,8 +27,11 @@ class Comment(models.Model):
         return str(self.user.username)
     class Meta:
         ordering = ['-timestamp']
+    def get_absolute_url(self):
+        return reverse('comments:thread',kwargs={'id':self.object_id})
     def childrens(self):
         return Comment.objects.filter(parent = self)
+    
     @property
     def isParent(self):
         if self.parent is not None:

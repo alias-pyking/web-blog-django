@@ -19,6 +19,6 @@ from .views import comment_thread
 app_name = 'comment'
 
 urlpatterns = [
-    path('<int:abc>/',comment_thread, name='thread'),
+    path('<int:id>/',comment_thread, name='thread'),
     # path('<int:pk>/delete', views.post_delete, name='post-delete'),
 ]

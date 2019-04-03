@@ -14,7 +14,7 @@ from comments.forms import CommentForm
 # This View is used to create the post
 # @param request This is common for all views and is used because in
 # web we use request to do almost every thing like http Get Request and post request
-# this method use the form  that is created in forms.py to form a post and then save it
+# this method use the form that is created in forms.py to form a post and then save it
 # if it is valid
 
 
@@ -77,7 +77,7 @@ def post_detail(request, pk=None):
             comentText=content_data,
             parent = parent_obj
             )
-        return HttpResponseRedirect(new_comment.content_object.get_absolute_url())
+        return redirect('post-detail')
     context = {
         'instance': instance,
         'share_string': share_string,
