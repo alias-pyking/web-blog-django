@@ -50,62 +50,29 @@
     
         </form>
       {% for comment in comments %}
-        <div class="container">
-            <div class="dialogbox">
-              <div class="body">
-                <span class="tip tip-up"></span>
-                  <blockquote>{{comment.comentText }}</blockquote>
 
-          <footer class="blockquote-footer">via {{ comment.user }}| {{comment.timestamp|timesince }}</cite></footer>
-                </div>
-              </div>
-            </div>
-      {% endfor %}
-      <style>
-      .tip {
-  width: 0px;
-  height: 0px;
-  position: absolute;
-  background: transparent;
-  border: 10px solid #ccc;
-}
+        <blockquote class="blockquote">{{comment.comentText }}
+        <footer class="blockquote-footer">via {{ comment.user }}| {{comment.timestamp|timesince }} ago 
+          {% if comment.childrens.count > 0 %} {{ comment.childrens.count }} Comments | {% endif %}
+          <a class="comment-reply-btn" href="#">Reply</a> </footer>
+        <div class="comment-reply" style="display: none">
+          {% for child_comment in comment.childrens %}
+          <blockquote class="blockquote">{{child_comment.comentText }}
+         <footer class="blockquote-footer">via {{ child_comment.user }}| {{child_comment.timestamp|timesince }} ago</footer>
+        </blockquote>
+        {% endfor %}
+      <form action="." method="POST">
+          {% csrf_token %}
+          {{ comment_form|crispy }}
+          <input type="hidden"  name="parent_id" value="{{ comment.id }}">
+          <input type="submit" value="Reply ">
+        </form>
 
-.tip-up {
-  top: -25px; /* Same as body margin top + border */
-  left: 10px;
-  border-right-color: transparent;
-  border-left-color: transparent;
-  border-top-color: transparent;
-}
-.dialogbox .body {
-  position: relative;
-  max-width: 300px;
-  height: auto;
-  margin: 20px 10px;
-  padding: 5px;
-  background-color: #DADADA;
-  border-radius: 3px;
-  border: 5px solid #ccc;
-}
-
-.body .message {
-  min-height: 30px;
-  border-radius: 3px;
-  font-family: Arial;
-  font-size: 14px;
-  line-height: 1.5;
-  color: #797979;
-}
-      </style>
+        </blockquote>
+        <hr/>
     </div>
-    <script
-      src="http://code.jquery.com/jquery-3.3.1.min.js"
-      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-      crossorigin="anonymous"
-    ></script>
-    <script type="text/javascript">
-      $("img").addClass("img-fluid");
-    </script>
+      {% endfor %}
+  
   </div>
 </div>
 {% endblock content %}

@@ -15,11 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from . import views
+from .views import comment_thread
+app_name = 'comment'
+
 urlpatterns = [
-    path('', views.post_list, name='post-list'),
-    path('new/', views.post_create, name='post-create'),
-    path('<int:pk>/', views.post_detail, name='post-detail'),
-    path('<int:pk>/edit', views.post_update, name='post-update'),
-    path('<int:pk>/delete', views.post_delete, name='post-delete'),
+    path('<int:abc>/',comment_thread, name='thread'),
+    # path('<int:pk>/delete', views.post_delete, name='post-delete'),
 ]
