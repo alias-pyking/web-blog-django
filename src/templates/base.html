@@ -1,46 +1,60 @@
 {% load static %} {% load markdown_deux_tags %}
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>{% block head_title %} Post Home {% endblock head_title %}</title>
-    <link rel = 'stylesheet' href="{% static "css/base.css" %}"/>
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-      crossorigin="anonymous"
-    />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    {% block head_extra %} {% endblock head_extra %}
-  </head>
-  
-  <body>
-    {% include "messages_display.html" %}
-    <div class="container">
-      {% block content %} {% endblock content %}
-    </div>
-    <script
-      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="http://code.jquery.com/jquery-3.3.1.min.js"
-      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-      crossorigin="anonymous"
-    ></script>
-    <script type="text/javascript">
-      $("img").addClass("img-fluid");
-          
-          $("img").addClass("img-fluid");
-          $(".comment-reply-btn").click(function(event){
-            event.preventDefault();
-            $(this).parent().next(".comment-reply").fadeToggle();
-          });
-        </script>
-    
-  </body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>{% block head_title %} Post Home {% endblock head_title %}</title>
+		<link rel = 'stylesheet' href="{% static "css/base.css" %}"/>
+		<link
+			rel="stylesheet"
+			href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+			integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+			crossorigin="anonymous"
+		/>
+		<link
+			rel="stylesheet"
+			href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+		/>
+		{% block head_extra %} {% endblock head_extra %}
+	</head>
+
+	<body>
+		<div class="container">
+			{% if messages %}
+			<ul class="messages">
+				{% for message in messages %} {% if message.tags %}
+				{{message.tags }}
+				{% endif %}
+				<p {% if message.tags %} class="{{ message.tags }}" {% endif %}>
+					{{ message }}
+				</p>
+				{% endfor %}
+			</ul>
+			{% endif %} {% block content %} {% endblock content %}
+		</div>
+		<script
+			src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+			integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+			crossorigin="anonymous"
+		></script>
+		<script
+			src="http://code.jquery.com/jquery-3.3.1.min.js"
+			integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+			crossorigin="anonymous"
+		></script>
+		<script type="text/javascript">
+			$("img").addClass("img-fluid");
+
+			$("img").addClass("img-fluid");
+			$(".comment-reply-btn").click(function(event) {
+				event.preventDefault();
+				$(this)
+					.parent()
+					.next(".comment-reply")
+					.fadeToggle();
+			});
+		</script>
+	</body>
 </html>

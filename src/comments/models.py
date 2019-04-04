@@ -28,7 +28,7 @@ class Comment(models.Model):
     class Meta:
         ordering = ['-timestamp']
     def get_absolute_url(self):
-        return reverse('comments:thread',kwargs={'id':self.object_id})
+        return reverse('comments:thread',kwargs={'id':self.id})
     def childrens(self):
         return Comment.objects.filter(parent = self)
     

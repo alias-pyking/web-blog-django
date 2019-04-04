@@ -17,7 +17,6 @@ from comments.forms import CommentForm
 # this method use the form that is created in forms.py to form a post and then save it
 # if it is valid
 
-
 def post_create(request):
     if not request.user.is_staff or not request.user.is_superuser:
         raise Http404
@@ -77,7 +76,7 @@ def post_detail(request, pk=None):
             comentText=content_data,
             parent = parent_obj
             )
-        return redirect('post-detail')
+        return HttpResponseRedirect(new_comment.content_object.get_absolute_url())
     context = {
         'instance': instance,
         'share_string': share_string,
@@ -132,5 +131,5 @@ def post_update(request, pk=None):
 def post_delete(request, pk=None):
     instance = get_object_or_404(Post, pk=pk)
     instance.delete()
-    messages.success(request, "Success fully deleted")
-    return redirect('post-list')
+    messages.success(request, "Successfully deleted")
+    return redirect('posts:post-list')

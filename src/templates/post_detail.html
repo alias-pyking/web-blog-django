@@ -10,6 +10,7 @@
 
     <img src="{{ instance.image.url }}" class="img-fluid" />
     {% endif %}
+    <p>Read  Time : {{ instance.read_time|time:'i' }} min</p>
     <small class="faded">{{ instance.timestamp }} </small>
     {% if instance.user %}
     <p>Author : {{ instance.user }}</p>

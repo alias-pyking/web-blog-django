@@ -15,10 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from .views import comment_thread
+from .views import comment_thread, comment_delete
 app_name = 'comment'
 
 urlpatterns = [
     path('<int:id>/',comment_thread, name='thread'),
+    path('<int:id>/delete',comment_delete, name='comment_delete'),
     # path('<int:pk>/delete', views.post_delete, name='post-delete'),
 ]

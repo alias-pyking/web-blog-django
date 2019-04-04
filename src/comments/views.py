@@ -5,7 +5,27 @@ from django.contrib.contenttypes.models import ContentType
 from django.http import HttpResponseRedirect
 from .forms import CommentForm
 from posts.models import Post
-# Create your views here.
+from django.contrib import messages
+# View for the confirmation of delete of the comment 
+
+def post_delete(request, pk=None):
+    instance = get_object_or_404(Post, pk=pk)
+    instance.delete()
+    messages.success(request, "Successfully deleted")
+    return redirect('posts:post-list')
+
+def comment_delete(request, id = None):
+    instance = get_object_or_404(Comment,id = id)
+    parent_obj_url = instance.content_object.get_absolute_url() # post object url
+    if request.method=='POST':
+        instance.delete()
+        messages.success(request,"Successfully deleted")
+        return HttpResponseRedirect(parent_obj_url)
+    context ={
+        'object':instance
+    }
+    return render(request,'confirm_delete.html',context)
+
 def comment_thread(request,id):
     obj = get_object_or_404(Comment, id = id)
     content_object = obj.content_object
@@ -15,7 +35,6 @@ def comment_thread(request,id):
         'object_id':content_id
     }
     comment_form = CommentForm(request.POST or None, initial =initial_data)
-    print(comment_form.errors)
     if comment_form.is_valid():
         # if the form is valid the getting the content_type from the comment_form
         # getting the object id from the comment_form
@@ -42,7 +61,7 @@ def comment_thread(request,id):
             comentText=content_data,
             parent = parent_obj
             )
-        return redirect('thread')
+        return HttpResponseRedirect(new_comment.content_object.get_absolute_url())
     context = {
         'comment':obj,
         'comment_form':comment_form,

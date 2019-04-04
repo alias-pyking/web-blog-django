@@ -6,3 +6,8 @@
   margin-left: 0px !important;
   margin-right: 0px !important;
 }
+.success{
+  color: #777777;
+  border: 1px solid green ;
+  padding: 5px 5px 5px 5px;
+}
