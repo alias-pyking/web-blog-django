@@ -11,6 +11,9 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'web_blog.settings')
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+path = BASE_DIR+'/web_blog'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'path.settings'
 
 application = get_wsgi_application()
