@@ -11,3 +11,28 @@
   border: 1px solid green ;
   padding: 5px 5px 5px 5px;
 }
+@media (min-width: 576px)
+.form-inline .form-control {
+    display: inline-block;
+    width: auto;
+    vertical-align: middle;
+} 
+.navbar, .navbar * {
+  transition: all .25s ease-in-out;
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+  height: calc(2.0625rem + 2px);
+  padding: .375rem .75rem;
+  font-size: .875rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 0;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}

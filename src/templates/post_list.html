@@ -1,33 +1,23 @@
 {% extends "base.html" %}
 {% load markdown_deux_tags %}
 {% block content %}
-<br />
-<form action="" method="GET">
-<div class="col-lg-6">
-    <div class="input-group">
-      <input type="text" class="form-control" name ='q' placeholder="Search for..."  value="{{request.GET.q}}">
-      <span class="input-group-btn">
-        <button class="btn btn-info"type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
-      </span>
-    </div><!-- /input-group -->
-  </div><!-- /.col-lg-6 -->
-</form>
-<div class="row">
-  {% for post in posts %}
+
+<div class="row mt-2">
   <div class="col-sm-8">
-    <div class="thumbnail">
-      <div class="caption card pl-3 mt-2 pt-5">
-        <h1>
-          <a href="{{ post.get_absolute_url }} "> {{ post.title }}</a>
-        </h1>
-        <small>{{ post.timestamp | timesince }} ago</small>
+  {% for post in posts %}
+  <div class="card  mt-2 mb-2 pl-3 pr-3">
+        
+          <a href="{{ post.get_absolute_url }}" style="color:black"> <h1 class="mt-4"> {{post.title }}</h1></a>
+
+         <p class="text-muted" >
+        {% if post.user %}
+        Posted by <a href=""> {{ post.user }} </a>
+        {% endif %} on {{ post.timestamp }}</p>
         {% if post.image %}
         <img src="{{ post.image.url }}" class="img-fluid ml-2 mr-4 mt-2 mb-2" />
-        {% endif %} {% if post.user %}
-        <p>Author : {{ post.user }}</p>
-        {% endif %}
+        {% endif %} 
         <p id="content" class="content-markdown">
-          {{ post.content | markdown |linebreaks|truncatechars_html:150 }}
+          {{ post.content | markdown |linebreaks|truncatechars_html:400 }}
         </p>
         <script
           src="http://code.jquery.com/jquery-3.3.1.min.js"
@@ -38,28 +28,45 @@
           $("img").addClass("img-fluid");
         </script>
         <p>
-          <a href="{{  post.get_absolute_url }}" class="btn btn-primary">View</a>
+          <a href="{{  post.get_absolute_url }}" class="btn btn-outline-light" style="color:black">Read more </a>
         </p>
-      </div>
     </div>
-  </div>
+    {% endfor %}
+</div> <!--end of the coloumn first  -->
+  <div class="col-sm-4 mt-2" id="leftCol">
+    <div class="media card my-4"
+    style="position:sticky"
+    >
+      <p class="card-header">Recent Posts </p>
+      <div class="list-group">
+        {% for post in posts %}
+          <a href="{{ post.get_absolute_url }}" class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-1">{{ post.title }}</h5>
+              <small>{{ post.timestamp|timesince }} ago </small>
+            </div>
+            <p class="mb-1">{{ post.content|markdown|truncatechars_html:80 }}</p>
+            <small>{{ post.user }}</small>
+          </a>
+          {% endfor %}
+        </div>
+    </div>
+    </div><!-- end of the second column that is sidebar -->
 
-  {% endfor %}
-  <div class="pagination mb-5 col-sm-6">
-    <span class="step-links">
+  
+  <div class="pagination mb-5 mt-5 col-sm-6">
+    <ul class="pagination justify-content-end">
       {% if posts.has_previous %}
-      <li class="page-item"><a href="?page=1" class="page-link">&laquo; first</a></li>
-      <li class="page-item"<a href="?page={{ posts.previous_page_number }} " class="page-link">{{ posts.previous_page_number }}</a></li>
+      <li class="page-item"><a href="?page=1" class="page-link ml-2 mr-2 btn btn-dark">&laquo; previous</a></li>
+      <li class="page-item"><a href="?page={{ posts.previous_page_number }} " class="page-link ml-2 mr-2 btn btn-dark">{{ posts.previous_page_number }}</a></li>
       {% endif %}
 
-      <li class="page-item active"><a href="" class="page-link">  {{ posts.number }}</a></li>
-        
-      </span>
-
+      <li class="page-item active"><a href="?page={{ posts.number }}" class="page-link mr-2 ml-2 btn btn-dark">  {{ posts.number }}</a></li>
       {% if posts.has_next %}
-      <li class="page-item"><a href="?page={{ posts.next_page_number }}" class="page-link">{{ posts.next_page_number }} </a></li>
+      <li class="page-item"><a href="?page={{ posts.next_page_number }}" class="page-link mr-2 ml-2 btn btn-dark">{{ posts.next_page_number }} </a></li>
       {% endif %}
-    </span>
+      <li class="page-item"><a href="?page={{ posts.paginator.num_pages }}" class="page-link btn btn-dark">last &raquo;</a> </li>
+    </ul>
   </div>
 </div>
 {% endblock content %}

@@ -130,6 +130,8 @@ def post_update(request, pk=None):
 
 def post_delete(request, pk=None):
     instance = get_object_or_404(Post, pk=pk)
-    instance.delete()
-    messages.success(request, "Successfully deleted")
-    return redirect('posts:post-list')
+    if request.method == "POST" and request.user == instance.user:
+        instance.delete()
+        messages.success(request,'post has been deleted successfully ')
+        return redirect('posts:post-list')
+    return render(request,'confirm_delete.html',{'object':instance})

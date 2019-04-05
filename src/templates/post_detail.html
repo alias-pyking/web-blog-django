@@ -2,19 +2,23 @@
 {% load crispy_forms_tags %}
 {% load markdown_deux_tags %}
 {% block content %}
-<div class="col-sm-8  card  mt-2 mb-5 pt-2 pb-2 pr-2 pl-2 col-sm-offset-3">
+<div class="col-sm-8 mt-2 mb-5 pt-2 pb-2 pr-2 pl-2 col-sm-offset-3">
   <div class="caption">
-    <h1>
+    {% if user == instance.user %}
+    <a href="{% url 'posts:post-delete' instance.id %}" class="btn btn-danger"> Delete </a>
+    <a href="{% url 'posts:post-update' instance.id %}" class="btn btn-secondary">Edit Post</a>
+    {% endif %}
+    <h1 class="mt-4">
       {{ instance.title }}
     </h1>
     {% if instance.image %}
 
     <img src="{{ instance.image.url }}" class="img-fluid" />
     {% endif %}
-    <p>Read  Time : {{ instance.read_time|time:'i' }} min</p>
-    <small class="faded">{{ instance.timestamp }} </small>
+    <p class="text-muted ">Read  Time : {{ instance.read_time|time:'i' }} min</p>
+    <p class="text-muted">Posted on {{ instance.timestamp }} </p>
     {% if instance.user %}
-    <p>Author : {{ instance.user }}</p>
+    <p class="lead"> Posted by <a href=""> {{instance.user }} </a></p>
     {% endif %} Share on
     <a
       class="twitterlink"
@@ -39,22 +43,31 @@
       Linkedin
     </a>
 
-    <p id="content" class="content-markdown mt-2 mb-2 mr-2 ml-2">
+    <p id="content" class="content-markdown mt-2 mb-2 mr-2 ml-2 lead">
       {{ instance.content|markdown|linebreaks }}
     </p>
     
-    <div class="comments">
-      <p class="lead">Comments</p>
+    <div class="comments card my-4">
+      <h5 class="lead card-header">Leave a Comment </h5>
+      <div class="card-body">
       <form action="." method="POST">
           {% csrf_token %}
+          <div class="form-group">
           {{ comment_form|crispy }}
-          <input type="submit" value="Post Comments">
-    
+          <input type="submit" value="Comment" class="btn btn-outline-dark">
+        </div>
         </form>
+      </div>
+    </div>
       {% for comment in comments %}
 
-        <blockquote class="blockquote">{{comment.comentText }}
-        <footer class="blockquote-footer">via {{ comment.user }}| {{comment.timestamp|timesince }} ago 
+        <div class="media mb-4">
+          <div class="media-body">
+            <h4 class="mt-0 ml-2"> {{ comment.user }}</h4>
+          
+           <p class = "ml-2 mr-2 ">{{comment.comentText }}</p>
+
+        <footer class="blockquote-footer"> {{comment.timestamp|timesince }} ago 
           {% if comment.childrens.count > 0 %} {{ comment.childrens.count }} Comments | {% endif %}
           <a class="comment-reply-btn" href="#">Reply</a> |
           <a  href="{{ comment.get_absolute_url }}">Thread</a><br>
@@ -63,22 +76,30 @@
           {% endif %}
           
         </footer>
-        <div class="comment-reply" style="display: none">
+        <div class="comment-reply mt-4" style="display: none">
           {% for child_comment in comment.childrens %}
-          <blockquote class="blockquote">{{child_comment.comentText }}
-         <footer class="blockquote-footer">via {{ child_comment.user }}| {{child_comment.timestamp|timesince }} ago</footer>
-        </blockquote>
+          <div class="media-body ml-5">
+           <h4 class="mt-0"> {{ child_comment.user }}</h4>
+           {{child_comment.comentText }}
+         <footer class="blockquote-footer"> {{child_comment.timestamp|timesince }} ago</footer>
+          </div>
         {% endfor %}
+        <div class="comments card my-4">
+            <h5 class="lead card-header">Leave a Reply </h5>
+            <div class="card-body">
       <form action="." method="POST">
           {% csrf_token %}
+          <div class="form-group">
           {{ comment_form|crispy }}
           <input type="hidden"  name="parent_id" value="{{ comment.id }}">
-          <input type="submit" value="Reply ">
+          <input type="submit" value="Reply " class="btn btn-dark">
+        </div>
         </form>
-
-        </blockquote>
-        <hr/>
+        </div>
+        </div>
+        </div>
     </div>
+  </div>
       {% endfor %}
   
   </div>
