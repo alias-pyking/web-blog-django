@@ -17,6 +17,7 @@ from comments.forms import CommentForm
 # this method use the form that is created in forms.py to form a post and then save it
 # if it is valid
 
+
 def post_create(request):
     if not request.user.is_staff or not request.user.is_superuser:
         raise Http404
@@ -54,7 +55,7 @@ def post_detail(request, pk=None):
         # if the form is valid the getting the content_type from the comment_form
         # getting the object id from the comment_form
         # getting the content from the comment_form
-        # form that data from form creating the whole comment (Comment model) 
+        # form that data from form creating the whole comment (Comment model)
         c_type = comment_form.cleaned_data.get('content_type')
         obj_id = comment_form.cleaned_data.get('object_id')
         content_type = ContentType.objects.get(model=c_type)
@@ -65,17 +66,17 @@ def post_detail(request, pk=None):
         except:
             parent_id = None
         if parent_id:
-            parent_qs = Comment.objects.filter(id = parent_id)
+            parent_qs = Comment.objects.filter(id=parent_id)
             if parent_qs.exists() and parent_qs.count() == 1:
                 parent_obj = parent_qs.first()
-       
-        new_comment,created = Comment.objects.get_or_create(
-            user = request.user,
-            content_type = content_type,
-            object_id = obj_id,
+
+        new_comment, created = Comment.objects.get_or_create(
+            user=request.user,
+            content_type=content_type,
+            object_id=obj_id,
             comentText=content_data,
-            parent = parent_obj
-            )
+            parent=parent_obj
+        )
         return HttpResponseRedirect(new_comment.content_object.get_absolute_url())
     context = {
         'instance': instance,
@@ -117,6 +118,15 @@ def post_update(request, pk=None):
             instance.save()
             messages.success(request, "successfully updated")
             return HttpResponseRedirect(instance.get_absolute_url())
+        else:
+            form = PostForm(instance=instance)
+            context = {
+                'title': instance.title,
+                'instance': instance,
+                'form': form,
+            }
+            messages.error(request, "Something went wrong")
+            return render(request, 'post_form.html', context)
     else:
         form = PostForm(instance=instance)
         context = {
@@ -132,6 +142,6 @@ def post_delete(request, pk=None):
     instance = get_object_or_404(Post, pk=pk)
     if request.method == "POST" and request.user == instance.user:
         instance.delete()
-        messages.success(request,'post has been deleted successfully ')
+        messages.success(request, 'post has been deleted successfully ')
         return redirect('posts:post-list')
-    return render(request,'confirm_delete.html',{'object':instance})
+    return render(request, 'confirm_delete.html', {'object': instance})
