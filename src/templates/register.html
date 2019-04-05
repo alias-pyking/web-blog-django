@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags  %}
+{% block content%}
+<div class="col-sm-8 card mt-5">
+    <legend>Sign Up</legend>
+<form action="" method="POST">{% csrf_token %}
+    {{ form.username|as_crispy_field}}
+    {{ form.email|as_crispy_field }}
+    {{ form.password1|as_crispy_field }}
+    {{ form.password2|as_crispy_field }}
+    <input type="submit" value="Sign Up" class="btn btn-outline-dark">
+</form>
+<small class="text-muted">Already have an account Login<a href="{% url 'users:login' %}"> here</a></small>
+</div>
+{% endblock content %}

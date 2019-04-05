@@ -89,7 +89,7 @@ def post_detail(request, pk=None):
 
 def post_list(request):
     queryset_list = Post.objects.all()
-    paginator = Paginator(queryset_list, 8)
+    paginator = Paginator(queryset_list, 4)
     page = request.GET.get('page')
     queryset = paginator.get_page(page)
     query = request.GET.get('q')

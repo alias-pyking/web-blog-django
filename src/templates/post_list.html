@@ -1,4 +1,6 @@
-{% extends "base.html" %} {% load markdown_deux_tags %} {% block content %}
+{% extends "base.html" %}
+{% load markdown_deux_tags %}
+{% block content %}
 <br />
 <form action="" method="GET">
 <div class="col-lg-6">
@@ -46,17 +48,16 @@
   <div class="pagination mb-5 col-sm-6">
     <span class="step-links">
       {% if posts.has_previous %}
-      <a href="?page=1">&laquo; first</a>
-      <a href="?page={{ posts.previous_page_number }}">previous</a>
+      <li class="page-item"><a href="?page=1" class="page-link">&laquo; first</a></li>
+      <li class="page-item"<a href="?page={{ posts.previous_page_number }} " class="page-link">{{ posts.previous_page_number }}</a></li>
       {% endif %}
 
-      <span class="current">
-        Page {{ posts.number }} of {{ posts.paginator.num_pages }}.
+      <li class="page-item active"><a href="" class="page-link">  {{ posts.number }}</a></li>
+        
       </span>
 
       {% if posts.has_next %}
-      <a href="?page={{ posts.next_page_number }} ">next</a>
-      <a href="?page={{ posts.paginator.num_pages }}">last &raquo;</a>
+      <li class="page-item"><a href="?page={{ posts.next_page_number }}" class="page-link">{{ posts.next_page_number }} </a></li>
       {% endif %}
     </span>
   </div>

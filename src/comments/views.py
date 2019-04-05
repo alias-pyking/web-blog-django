@@ -2,25 +2,25 @@ from django.shortcuts import render
 from django.shortcuts import get_object_or_404,redirect
 from .models import Comment
 from django.contrib.contenttypes.models import ContentType
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect,Http404
 from .forms import CommentForm
 from posts.models import Post
 from django.contrib import messages
 # View for the confirmation of delete of the comment 
-
-def post_delete(request, pk=None):
-    instance = get_object_or_404(Post, pk=pk)
-    instance.delete()
-    messages.success(request, "Successfully deleted")
-    return redirect('posts:post-list')
-
 def comment_delete(request, id = None):
-    instance = get_object_or_404(Comment,id = id)
-    parent_obj_url = instance.content_object.get_absolute_url() # post object url
-    if request.method=='POST':
-        instance.delete()
-        messages.success(request,"Successfully deleted")
-        return HttpResponseRedirect(parent_obj_url)
+    instance = None
+    try:
+        instance = Comment.objects.get(id = id)
+    except:
+        raise Http404
+    if instance.user == request.user:    
+        if request.method=='POST':
+            parent_obj_url = instance.content_object.get_absolute_url()
+            instance.delete()
+            messages.success(request,"Successfully deleted")
+            return HttpResponseRedirect(parent_obj_url)
+    else:
+        raise Http404
     context ={
         'object':instance
     }

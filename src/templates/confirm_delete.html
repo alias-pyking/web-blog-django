@@ -5,8 +5,8 @@
     <h1>Confirm delete</h1>
     <form method="POST">{% csrf_token %}
        <h2> Are you sure you want to delete "{{object.comentText}}" </h2>
-       ,<input type="submit" value="Confirm" class="btn btn-danger">
-      <a href="{{ object.get_absolute_url }}" class="btn btn-success">Cancel</a>
+       ,<input type="submit" value="Confirm" class="btn btn-outline-danger">
+      <a href="{{ object.get_absolute_url }}" class="btn btn-outline-success">Cancel</a>
     </form>
     <hr/>
 </div>

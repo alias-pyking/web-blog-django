@@ -5,6 +5,7 @@
         {{comment.comentText }}
     <footer class="blockquote-footer">via {{ comment.user }}| {{comment.timestamp|timesince }} ago 
       {% if comment.childrens.count > 0 %} {{ comment.childrens.count }} Comments | {% endif %}</footer>
+      <a href=""><i class="fa fa-trash" aria-hidden="true"></i></a> 
       <hr/>
     <div class="comment-reply">
       {% for child_comment in comment.childrens %}
