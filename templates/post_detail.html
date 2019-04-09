@@ -63,7 +63,9 @@
 
         <div class="media mb-4">
           <div class="media-body">
+            <div class="page-header">
             <h4 class="mt-0 ml-2"> {{ comment.user }}</h4>
+          </div>
           
            <p class = "ml-2 mr-2 ">{{comment.comentText }}</p>
 
@@ -79,7 +81,9 @@
         <div class="comment-reply mt-4" style="display: none">
           {% for child_comment in comment.childrens %}
           <div class="media-body ml-5">
+            <div class="page-header">
            <h4 class="mt-0"> {{ child_comment.user }}</h4>
+          </div>
            {{child_comment.comentText }}
          <footer class="blockquote-footer"> {{child_comment.timestamp|timesince }} ago</footer>
           </div>

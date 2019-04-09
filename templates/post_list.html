@@ -6,8 +6,9 @@
   <div class="col-sm-8">
   {% for post in posts %}
   <div class="card  mt-2 mb-2 pl-3 pr-3">
-        
-          <a href="{{ post.get_absolute_url }}" style="color:black"> <h1 class="mt-4"> {{post.title }}</h1></a>
+        <div class="page-header">
+          <a href="{{ post.get_absolute_url }}" style="color:black"> <h1> {{post.title}}</h1></a>
+        </div>
 
          <p class="text-muted" >
         {% if post.user %}
@@ -17,18 +18,8 @@
         <img src="{{ post.image.url }}" class="img-fluid ml-2 mr-4 mt-2 mb-2" />
         {% endif %} 
         <p id="content" class="content-markdown">
-          {{ post.content | markdown |linebreaks|truncatechars_html:400 }}
-        </p>
-        <script
-          src="http://code.jquery.com/jquery-3.3.1.min.js"
-          integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-          crossorigin="anonymous"
-        ></script>
-        <script type="text/javascript">
-          $("img").addClass("img-fluid");
-        </script>
-        <p>
-          <a href="{{  post.get_absolute_url }}" class="btn btn-outline-light" style="color:black">Read more </a>
+          {{ post.content|markdown |linebreaks|truncatechars_html:400 }}
+          <a href="{{  post.get_absolute_url }}"style="color:black">Read more </a>
         </p>
     </div>
     {% endfor %}
@@ -45,7 +36,7 @@
               <h5 class="mb-1">{{ post.title }}</h5>
               <small>{{ post.timestamp|timesince }} ago </small>
             </div>
-            <p class="mb-1">{{ post.content|markdown|truncatechars_html:80 }}</p>
+            <p class="mb-1">{{ post.content|truncatechars_html:80 }}</p>
             <small>{{ post.user }}</small>
           </a>
           {% endfor %}
@@ -69,4 +60,12 @@
     </ul>
   </div>
 </div>
+<script
+          src="http://code.jquery.com/jquery-3.3.1.min.js"
+          integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+          crossorigin="anonymous"
+        ></script>
+        <script type="text/javascript">
+          $("img").addClass("img-fluid");
+        </script>
 {% endblock content %}

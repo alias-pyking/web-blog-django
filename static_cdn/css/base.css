@@ -11,12 +11,6 @@
   border: 1px solid green ;
   padding: 5px 5px 5px 5px;
 }
-@media (min-width: 576px)
-.form-inline .form-control {
-    display: inline-block;
-    width: auto;
-    vertical-align: middle;
-} 
 .navbar, .navbar * {
   transition: all .25s ease-in-out;
 }
